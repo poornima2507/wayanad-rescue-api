@@ -70,6 +70,18 @@ app.post("/addData", (req, res) => {
     })
 })
 
+app.post("/viewAll", (req, res) => {
+    let token = req.headers["token"]
+    jwt.verify(token, "rescue-app", (error, decoded) => {
+        if (decoded) {
+            dataModel.find().then(
+                (responce) => {
+                    res.json(responce)
+                }
+            )
+        }
+    })
+})
 
 
 

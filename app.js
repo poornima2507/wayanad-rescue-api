@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt")
 const cors= require("cors")
 const jwt = require("jsonwebtoken")
 const loginModel = require("./models/admin")
+const dataModel = require("./models/peoples")
 
 
 
@@ -52,6 +53,23 @@ app.post("/adminSignIn", (req, res) => {
     })
 
 })
+
+
+app.post("/addData", (req, res) => {
+    let input = req.body
+    let token = req.headers.token
+    jwt.verify(token, "rescue-app", (error, decoded) => {
+        if (decoded && decoded.email) {
+            let result = new dataModel(input)
+            result.save()
+            res.json({ "status": "success" })
+        } else {
+            res.json({ "status": "invalid authentication" })
+
+        }
+    })
+})
+
 
 
 
